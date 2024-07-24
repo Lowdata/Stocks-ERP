@@ -26,7 +26,8 @@ const userSchema = mongoose.Schema(
     photo: {
       type: String,
       required: [true, "Please enter a photo"],
-      default: "", // add a default one
+      default:
+        "https://www.google.com/imgres?q=user%20profile&imgurl=https%3A%2F%2Fcdn.vectorstock.com%2Fi%2F1000v%2F30%2F97%2Fflat-business-man-user-profile-avatar-icon-vector-4333097.jpg&imgrefurl=https%3A%2F%2Fwww.vectorstock.com%2Froyalty-free-vector%2Fflat-business-man-user-profile-avatar-icon-vector-4333097&docid=u1SY3va6wsUW9M&tbnid=i57iCtS92F1kdM&vet=12ahUKEwi6vKa57r6HAxURTmwGHbeZCTUQM3oECGMQAA..i&w=1000&h=1080&hcb=2&ved=2ahUKEwi6vKa57r6HAxURTmwGHbeZCTUQM3oECGMQAA", // add a default one
     },
     bio: {
       type: String,
