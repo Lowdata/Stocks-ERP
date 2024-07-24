@@ -1,7 +1,7 @@
 import { errorHandler } from "../middleware/errorMiddleware.js";
 import asyncHandler from 'express-async-handler'
 import User from "../model/userModel.js";
-
+import bcrypt from "bcryptjs";
 
 export const userRegister = asyncHandler( async(req, res) => {
     
@@ -12,9 +12,9 @@ export const userRegister = asyncHandler( async(req, res) => {
         res.status(400);
         throw new Error("All fields are required");
     }
-    if(password.length<6){
+    if(password.length<5){
         res.status(400);
-        throw new Error("Password must be at least 6 characters long");
+        throw new Error("Password must be at least 5 characters long");
     }
     const userExist = await User.findOne({email});
     if(userExist){
@@ -22,11 +22,16 @@ export const userRegister = asyncHandler( async(req, res) => {
         throw new Error("User already exists with the same email");
     }
 
+    //password encryption
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     //create a new user
     const user = await User.create({
     name,     
     email,
-    password});
+    password: hashedPassword
+});
     if(user){
         const {_id, name, email , photo, phone, bio} = user
         res
