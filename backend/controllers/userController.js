@@ -1,4 +1,8 @@
-export const userRegister = (req, res) => {
-  res.send("Hello");
+import { errorHandler } from "../middleware/errorMiddleware.js";
+
+
+
+export const userRegister = async(req, res) => {
+  
 };
 

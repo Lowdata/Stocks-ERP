@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,9 @@ app.use("/api/users", userRoutes);
 app.get("/", (req, res) => {
   res.send("Home").status(200);
 });
+
+// Error Handler
+app.use(errorHandler);
 
 //DB connection and server starting
 const port = process.env.PORT || 3000;
