@@ -1,7 +1,7 @@
 import { errorHandler } from "../middleware/errorMiddleware.js";
 import asyncHandler from 'express-async-handler'
 import User from "../model/userModel.js";
-import bcrypt from "bcryptjs";
+
 
 export const userRegister = asyncHandler( async(req, res) => {
     
@@ -22,15 +22,11 @@ export const userRegister = asyncHandler( async(req, res) => {
         throw new Error("User already exists with the same email");
     }
 
-    //password encryption
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
     //create a new user
     const user = await User.create({
     name,     
     email,
-    password: hashedPassword
+    password
 });
     if(user){
         const {_id, name, email , photo, phone, bio} = user
