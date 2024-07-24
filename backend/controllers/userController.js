@@ -1,7 +1,18 @@
 import { errorHandler } from "../middleware/errorMiddleware.js";
 import asyncHandler from 'express-async-handler'
 import User from "../model/userModel.js";
+import jwt from 'jsonwebtoken'
 
+
+
+
+export const generateToken = (id) =>{
+    return jwt.sign(
+        {id},
+        process.env.JWT_SECRET,
+        {expiresIn: '1d'}
+    )
+};
 
 export const userRegister = asyncHandler( async(req, res) => {
     
@@ -21,6 +32,9 @@ export const userRegister = asyncHandler( async(req, res) => {
         res.status(400);
         throw new Error("User already exists with the same email");
     }
+   
+
+
 
     //create a new user
     const user = await User.create({
@@ -28,6 +42,10 @@ export const userRegister = asyncHandler( async(req, res) => {
     email,
     password
 });
+
+ //generate a token for a user
+    const token = generateToken(user._id);
+
     if(user){
         const {_id, name, email , photo, phone, bio} = user
         res
@@ -40,6 +58,7 @@ export const userRegister = asyncHandler( async(req, res) => {
             photo,
             phone,
             bio,
+            token
           });
     }else{
         res.status(400);
